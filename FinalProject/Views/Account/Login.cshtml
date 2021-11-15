@@ -1,0 +1,22 @@
+﻿@model FinalProject.Models.LoginModel
+
+<h2>Вход на сайт</h2>
+<a asp-action="Register" asp-controller = "Account">Добавить нового врача</a>
+<form asp-action="Login" asp-controller="Account" asp-antiforgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber">Введите логин: </label>
+            <input type="text" asp-for="PhoneNumber"/>
+            <span asp-validation-for="PhoneNumber" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Введите пароль: </label>
+            <input type="text" asp-for="Password"/>
+            <span asp-validation-for="Password"/>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Войти" class="btn btn-btn-outline-dark" />
+        </div>
+        <div>
+</form>
