@@ -27,10 +27,10 @@ namespace FinalProject.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            Role head = new Role { Id = 1, Name = headRoleName};
-            Role dephead = new Role { Id = 2, Name = depHeadRoleName };
-            Role gynec = new Role { Id = 3, Name = gynecRoleName };
-            Role obstet = new Role { Id = 4, Name = obstetRoleName };
+            Role head = new Role { Id = 1, Name = headRoleName, RusName = "Главный врач"};
+            Role dephead = new Role { Id = 2, Name = depHeadRoleName, RusName = "Заведующий кафедры" };
+            Role gynec = new Role { Id = 3, Name = gynecRoleName, RusName = "Акушер-гинеколог" };
+            Role obstet = new Role { Id = 4, Name = obstetRoleName, RusName = "Акушер" };
 
             User admin = new User { id = 1, PhoneNumber = "992988775715", Password = "123456", RoleId = head.Id };
 

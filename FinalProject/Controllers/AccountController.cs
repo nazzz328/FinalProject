@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FinalProject.Controllers
 {
@@ -44,8 +45,6 @@ namespace FinalProject.Controllers
                 if (user != null)
                 {
                     await Authenticate(user);
-                    //var listId = db.Users.Where(p => p.PhoneNumber == model.PhoneNumber).Select(p => p.id).ToList();
-                    //int id = listId[0];
                     return RedirectToAction("Index", "Account");
                 }
 
@@ -74,9 +73,13 @@ namespace FinalProject.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Head")]
-        public IActionResult Register ()
+        public async Task <IActionResult> Register ()
         {
-            return View();
+            var model = new RegisterModel
+            {
+                Roles = await db.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync()
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -89,10 +92,10 @@ namespace FinalProject.Controllers
                 var user = await db.Users.FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber);
                 if (user == null)
                 {
-                    user = new User { PhoneNumber = model.PhoneNumber, Password = model.Password };
-                    Role obstetRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "Obstet");
-                    if (obstetRole != null)
-                        user.Role = obstetRole;
+                    user = new User { PhoneNumber = model.PhoneNumber, Password = model.Password, RoleId = model.RoleId };
+                    Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Id == model.RoleId);
+                    if (userRole != null)
+                        user.Role = userRole;
                     await db.Users.AddAsync(user);
                     await db.SaveChangesAsync();
                     await Authenticate(user);

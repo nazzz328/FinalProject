@@ -1,2 +1,5 @@
 ﻿<h2>Вы успешно вошли в систему</h2>
-<a asp-action="Register" asp-controller = "Account">Добавить нового врача</a>
+@if ((await AuthorizationService.AuthorizeAsync(User, "OnlyForHead")).Succeeded)
+{
+    <a class="btn btn-light"asp-action="Register" asp-controller = "Account">Добавить нового врача</a>
+}

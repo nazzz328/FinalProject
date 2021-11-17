@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinalProject.Models
 {
@@ -12,5 +14,8 @@ namespace FinalProject.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
         public string ConfirmPassword { get; set; }
+        [Required]
+        public int RoleId { get; set; }
+        public List<SelectListItem> Roles { get; set; } = new List<SelectListItem>();
     }
 }
