@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace FinalProject.Controllers
 {
@@ -34,24 +35,28 @@ namespace FinalProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login (LoginModel model)
         {
-            var user = await db.Users.FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber && p.Password == model.Password);
+            User user = await db.Users
+                .Include(p => p.Role)
+                .FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber && p.Password == model.Password);
             var wrongPassUser = await db.Users.FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber && p.Password != model.Password);
             if (ModelState.IsValid)
             {
                 if (user != null)
                 {
-                    await Authenticate(model.PhoneNumber);
-                    return RedirectToAction("Index", "Home");
-                }
-
-                else if (user == null)
-                {
-                    ModelState.AddModelError("", "Данный пользователь не найден");
+                    await Authenticate(user);
+                    //var listId = db.Users.Where(p => p.PhoneNumber == model.PhoneNumber).Select(p => p.id).ToList();
+                    //int id = listId[0];
+                    return RedirectToAction("Index", "Account");
                 }
 
                 else if (wrongPassUser != null)
                 {
                     ModelState.AddModelError("", "Неправильный пароль");
+                }
+
+                else if (user == null)
+                {
+                    ModelState.AddModelError("", "Данный пользователь не найден");
                 }
 
                 else
@@ -68,6 +73,7 @@ namespace FinalProject.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Head")]
         public IActionResult Register ()
         {
             return View();
@@ -75,6 +81,7 @@ namespace FinalProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Head")]
         public async Task<IActionResult> Register (RegisterModel model)
         {
             if (ModelState.IsValid)
@@ -82,10 +89,14 @@ namespace FinalProject.Controllers
                 var user = await db.Users.FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber);
                 if (user == null)
                 {
-                    await db.Users.AddAsync(new User { PhoneNumber = model.PhoneNumber, Password = model.Password });
+                    user = new User { PhoneNumber = model.PhoneNumber, Password = model.Password };
+                    Role obstetRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "Obstet");
+                    if (obstetRole != null)
+                        user.Role = obstetRole;
+                    await db.Users.AddAsync(user);
                     await db.SaveChangesAsync();
-                    await Authenticate(model.PhoneNumber);
-                    return RedirectToAction("Index", "Home");
+                    await Authenticate(user);
+                    return RedirectToAction("Index", "Account");
                 }
                 else if (user != null)
                 {
@@ -104,11 +115,12 @@ namespace FinalProject.Controllers
             return View(model);
         }
 
-            private async Task Authenticate (string phoneNumber)
+            private async Task Authenticate (User user)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, phoneNumber)
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.PhoneNumber),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
                 };
 
                 ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
