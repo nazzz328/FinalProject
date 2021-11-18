@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Dynamic;
 
 namespace FinalProject.Controllers
 {
@@ -77,7 +78,7 @@ namespace FinalProject.Controllers
         {
             var model = new RegisterModel
             {
-                Roles = await db.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync()
+                Roles = await db.Roles.Where(p => p.Id != 1).Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync()
             };
             return View(model);
         }
@@ -92,14 +93,13 @@ namespace FinalProject.Controllers
                 var user = await db.Users.FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber);
                 if (user == null)
                 {
-                    user = new User { PhoneNumber = model.PhoneNumber, Password = model.Password, RoleId = model.RoleId };
+                    user = new User { PhoneNumber = model.PhoneNumber, Password = model.Password, RoleId = model.RoleId};
                     Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Id == model.RoleId);
                     if (userRole != null)
                         user.Role = userRole;
                     await db.Users.AddAsync(user);
                     await db.SaveChangesAsync();
-                    await Authenticate(user);
-                    return RedirectToAction("Index", "Account");
+                    return RedirectToAction("FillDoctorInfo", new { id = user.id });
                 }
                 else if (user != null)
                 {
@@ -118,7 +118,15 @@ namespace FinalProject.Controllers
             return View(model);
         }
 
-            private async Task Authenticate (User user)
+        [HttpGet]
+        [Authorize(Roles = "Head")]
+        public IActionResult FillDoctorInfo(int id)
+        {
+
+            return View();
+        }
+
+        private async Task Authenticate (User user)
             {
                 var claims = new List<Claim>
                 {
@@ -133,7 +141,7 @@ namespace FinalProject.Controllers
             public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
 
         }

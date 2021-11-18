@@ -13,6 +13,7 @@ namespace FinalProject.Context
 
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<Doctor> Doctors { get; set; }
         public UsersContext(DbContextOptions<UsersContext> options)
             : base(options)
         {

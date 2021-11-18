@@ -6,6 +6,7 @@ namespace FinalProject.Models
 {
     public class RegisterModel
     {
+        public int id { get; set; }
         [Required(ErrorMessage = "Не указан номер телефона")]
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Не указан пароль")]
