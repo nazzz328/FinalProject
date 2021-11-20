@@ -1,10 +1,14 @@
-﻿
-@model FinalProject.Models.Doctor
+﻿@model FinalProject.Models.DocEditModel
 
-<h2>Добавление нового врача</h2> <br/>
-<form asp-action="FillDoctorInfo" asp-controller="Account" asp-antiforgery="true">
+<h2>Измнение данных врача</h2> <br/>
+<form asp-action="Edit" method="post" asp-controller="Account" asp-antiforgery="true">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
     <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <div class="col-sm-3">
+            <label>Укажите должность врача: </label>
+        <select class="form-control selectpicker" asp-for="RoleId" asp-items="Model.Roles">  </select>
+        </div><br/>
         <div class="col-sm-3">
             <label asp-for="FirstName">Введите имя: </label>
             <input type="text" class="form-control" asp-for="FirstName"/>
@@ -38,8 +42,9 @@
 <br />
                 </div>
         <div class="btn-margin">
-            <input type="submit" class="btn btn-info" value="Отправить"/><a/>
+            <input type="submit" class="btn btn-info" value="Отправить"/>
             <input class="btn btn-danger" type="reset" value="Очистить" />
+            <a class="btn" asp-controller="Account" asp-action="Index">Назад</a>
         </div>
 
 </form>

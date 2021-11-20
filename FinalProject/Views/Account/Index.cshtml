@@ -1,5 +1,33 @@
-﻿<h2>Вы успешно вошли в систему</h2>
+﻿@model List<FinalProject.Models.DocViewModel>
+<h2>Вы успешно вошли в систему</h2>
 @if ((await AuthorizationService.AuthorizeAsync(User, "OnlyForHead")).Succeeded)
 {
     <a class="btn btn-light"asp-action="Register" asp-controller = "Account">Добавить нового врача</a>
+
+<br/>
+<table class="table">
+    <thead>
+        <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Должность</th>
+        <th></th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.RusName</td>
+            <td><a class="btn btn-link" href="~/Account/Edit?id=@item.Id">Изменить</a></td>
+            <td><a class="btn btn-link" href="~/Account/Delete?id=@item.Id">Удалить</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
 }

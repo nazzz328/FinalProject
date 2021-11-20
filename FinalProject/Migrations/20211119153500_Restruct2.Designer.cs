@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(UsersContext))]
-    [Migration("20211118211123_DoctorAdded")]
-    partial class DoctorAdded
+    [Migration("20211119153500_Restruct2")]
+    partial class Restruct2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,6 +61,20 @@ namespace FinalProject.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Doctors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Rudaki 70 apt 80",
+                            CreatedDate = new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1997, 9, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Назар",
+                            LastName = "Абдурахимов",
+                            MiddleName = "Рустамович",
+                            PassportNumber = "A50724353",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("FinalProject.Models.Role", b =>
@@ -110,11 +124,11 @@ namespace FinalProject.Migrations
 
             modelBuilder.Entity("FinalProject.Models.User", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -122,10 +136,10 @@ namespace FinalProject.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoleId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
@@ -134,7 +148,7 @@ namespace FinalProject.Migrations
                     b.HasData(
                         new
                         {
-                            id = 1,
+                            Id = 1,
                             Password = "123456",
                             PhoneNumber = "992988775715",
                             RoleId = 1
@@ -156,7 +170,9 @@ namespace FinalProject.Migrations
                 {
                     b.HasOne("FinalProject.Models.Role", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
                 });

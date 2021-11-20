@@ -18,5 +18,6 @@ namespace FinalProject.Models
         [Required]
         public int RoleId { get; set; }
         public List<SelectListItem> Roles { get; set; } = new List<SelectListItem>();
+
     }
 }

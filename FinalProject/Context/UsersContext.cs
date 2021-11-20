@@ -32,9 +32,9 @@ namespace FinalProject.Context
             Role dephead = new Role { Id = 2, Name = depHeadRoleName, RusName = "Заведующий кафедры" };
             Role gynec = new Role { Id = 3, Name = gynecRoleName, RusName = "Акушер-гинеколог" };
             Role obstet = new Role { Id = 4, Name = obstetRoleName, RusName = "Акушер" };
-
-            User admin = new User { id = 1, PhoneNumber = "992988775715", Password = "123456", RoleId = head.Id };
-
+            User admin = new User { Id = 1, PhoneNumber = "992988775715", Password = "123456", RoleId = head.Id };
+            Doctor adminDoc = new Doctor { Id = 1, FirstName = "Назар", LastName = "Абдурахимов", MiddleName = "Рустамович", DateOfBirth = new DateTime(1997, 09, 24), CreatedDate = new DateTime(2021, 11, 19), PassportNumber = "A50724353", Address = "Rudaki 70 apt 80", UserId = admin.Id};
+            modelBuilder.Entity<Doctor>().HasData(new Doctor[] { adminDoc });
             modelBuilder.Entity<Role>().HasData(new Role[] { head, dephead, gynec, obstet });
             modelBuilder.Entity<User>().HasData(new User[] { admin });
             base.OnModelCreating(modelBuilder);

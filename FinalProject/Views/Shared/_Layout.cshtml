@@ -29,7 +29,7 @@
                 @if ((await AuthorizationService.AuthorizeAsync(User, "Authorized")).Succeeded)
                         {
                             
-                            <button class="btn btn-light btn-outline-dark" id="logout">
+                            <button class="btn btn-light" id="logout">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a>
                             </button>
                         }

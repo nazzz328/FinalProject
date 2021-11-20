@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
+using System;
 
 namespace FinalProject.Controllers
 {
@@ -28,9 +29,21 @@ namespace FinalProject.Controllers
             return View();
         }
         [Authorize]
-        public IActionResult Index()
+        public async Task <IActionResult> Index()
         {
-            return View();
+            var Doctors = await db.Doctors.Where(p => p. Id != 1).Include(p => p.User).ToListAsync();
+            var viewDocs = new List<DocViewModel>();
+            foreach (var doc in Doctors)
+            {
+                viewDocs.Add(new DocViewModel
+                {
+                    Id = doc.Id,
+                    FirstName = doc.FirstName,
+                    LastName = doc.LastName,
+                    RusName = await db.Roles.Where(p => p.Id == doc.User.RoleId).Select(p => p.RusName).FirstOrDefaultAsync()
+                }); ;
+            }
+            return View(viewDocs);
         }
 
         [HttpPost]
@@ -83,6 +96,90 @@ namespace FinalProject.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Head")]
+        public async Task <IActionResult> Edit (int id)
+        {
+            var doctor = await db.Doctors.FindAsync(id); 
+            if (doctor == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var user = new User();
+            user = await db.Users.Include(p => p.Role).FirstOrDefaultAsync(p => p.Id == doctor.UserId);
+            var result = new DocEditModel
+            {
+                Id = doctor.Id,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                MiddleName = doctor.MiddleName,
+                Address = doctor.Address,
+                DateOfBirth = doctor.DateOfBirth,
+                PassportNumber = doctor.PassportNumber,
+                User = user,
+                UserId = user.Id,
+                Role = user.Role,
+                RoleId = user.RoleId,
+                Roles =await db.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync()
+        };
+            return View(result);
+        }
+
+        [HttpGet]
+        [Authorize (Roles = "Head")]
+        public async Task<IActionResult> Delete (int id)
+        {
+            var doctor = await db.Doctors.FindAsync(id);
+            if (doctor == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var user = await db.Users.FirstOrDefaultAsync(p => p.Id == doctor.UserId);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            db.Users.Remove(user);
+            db.Doctors.Remove(doctor);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Account");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Head")]
+        public async Task <IActionResult> Edit(DocEditModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Roles = await db.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync();
+                return View(model);
+            }
+            var doctor = await db.Doctors.FindAsync(model.Id);
+            if (doctor == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            doctor.FirstName = model.FirstName;
+            doctor.LastName = model.LastName;
+            doctor.MiddleName = model.MiddleName;
+            doctor.DateOfBirth = model.DateOfBirth;
+            doctor.Address = model.Address;
+            doctor.PassportNumber = model.PassportNumber;
+            var user = await db.Users.FindAsync(doctor.UserId);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            user.RoleId = model.RoleId;
+            Role userRole = await db.Roles.FirstOrDefaultAsync(p => p.Id == user.RoleId);
+            if (userRole != null)
+            {
+                user.Role = userRole;
+            }
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Account");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Head")]
@@ -99,7 +196,8 @@ namespace FinalProject.Controllers
                         user.Role = userRole;
                     await db.Users.AddAsync(user);
                     await db.SaveChangesAsync();
-                    return RedirectToAction("FillDoctorInfo", new { id = user.id });
+                    ViewBag.Id = user.Id;
+                    return RedirectToAction("FillDoctorInfo", new { id = user.Id });
                 }
                 else if (user != null)
                 {
@@ -115,16 +213,32 @@ namespace FinalProject.Controllers
             {
                 ModelState.AddModelError("", "Некорректный логин и(или) пароль");
             }
+            model.Roles = await db.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName}).ToListAsync();
             return View(model);
         }
 
         [HttpGet]
         [Authorize(Roles = "Head")]
-        public IActionResult FillDoctorInfo(int id)
+        public IActionResult FillDoctorInfo()
         {
-
             return View();
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Head")]
+        public async Task <IActionResult> FillDoctorInfo(Doctor doctorModel, int id)
+        {
+            var doctor = new Doctor { FirstName = doctorModel.FirstName, LastName = doctorModel.LastName, MiddleName = doctorModel.MiddleName, Address = doctorModel.Address, CreatedDate = DateTime.Now, DateOfBirth = doctorModel.DateOfBirth, PassportNumber = doctorModel.PassportNumber, UserId = id};
+            if (ModelState.IsValid)
+            {
+                await db.Doctors.AddAsync(doctor);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index", "Account");
+            }
+
+            return View(doctor);
+        }
+
 
         private async Task Authenticate (User user)
             {

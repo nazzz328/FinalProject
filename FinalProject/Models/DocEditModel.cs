@@ -1,9 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 
 namespace FinalProject.Models
 {
-    public class Doctor
+    public class DocEditModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -12,10 +13,10 @@ namespace FinalProject.Models
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
         public string PassportNumber { get; set; }
-        public DateTime CreatedDate { get; set; }
-        [ForeignKey("UserId")]
         public User User { get; set; }
         public int UserId { get; set; }
-
+        public Role Role { get; set; }
+        public int RoleId { get; set; }
+        public List<SelectListItem> Roles { get; set; }
     }
 }
