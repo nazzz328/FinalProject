@@ -9,10 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Dynamic;
 using System;
+using System.Web.Helpers;
 
 namespace FinalProject.Controllers
 {
@@ -50,10 +49,12 @@ namespace FinalProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login (LoginModel model)
         {
+            var hashedPassword = db.Users.Where(p => p.PhoneNumber == model.PhoneNumber).Select(p => p.HashedPassword).FirstOrDefault();
+            var isVerified = Crypto.VerifyHashedPassword(hashedPassword, model.Password);
             User user = await db.Users
                 .Include(p => p.Role)
-                .FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber && p.Password == model.Password);
-            var wrongPassUser = await db.Users.FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber && p.Password != model.Password);
+                .FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber && isVerified);
+            var wrongPassUser = await db.Users.FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber && p.HashedPassword != hashedPassword);
             if (ModelState.IsValid)
             {
                 if (user != null)
@@ -190,7 +191,8 @@ namespace FinalProject.Controllers
                 var user = await db.Users.FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber);
                 if (user == null)
                 {
-                    user = new User { PhoneNumber = model.PhoneNumber, Password = model.Password, RoleId = model.RoleId};
+                    model.HashedPassword = Crypto.HashPassword(model.Password);
+                    user = new User { PhoneNumber = model.PhoneNumber, HashedPassword = model.HashedPassword, RoleId = model.RoleId};
                     Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Id == model.RoleId);
                     if (userRole != null)
                         user.Role = userRole;
