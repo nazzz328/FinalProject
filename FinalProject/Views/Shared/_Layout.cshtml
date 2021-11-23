@@ -26,7 +26,7 @@
                         </li>
                     </ul>
                 </div>
-                @if ((await AuthorizationService.AuthorizeAsync(User, "Authorized")).Succeeded)
+                @if ((User.IsInRole("Head") || User.IsInRole("DepHead") || User.IsInRole("Gynec") || User.IsInRole("Obstet")))
                         {
                             
                             <button class="btn btn-light" id="logout">

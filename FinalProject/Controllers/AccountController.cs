@@ -241,6 +241,20 @@ namespace FinalProject.Controllers
             return View(doctor);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Obstet")]
+        public IActionResult AddPatient ()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Obstet")]
+        public IActionResult AddPatient (Patient patient)
+        {
+            return View();
+        }
+
 
         private async Task Authenticate (User user)
             {
