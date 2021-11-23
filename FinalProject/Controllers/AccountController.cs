@@ -121,7 +121,7 @@ namespace FinalProject.Controllers
                 UserId = user.Id,
                 Role = user.Role,
                 RoleId = user.RoleId,
-                Roles =await db.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync()
+                Roles =await db.Roles.Where(p => p.Id != 1).Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync()
         };
             return View(result);
         }
@@ -152,7 +152,7 @@ namespace FinalProject.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Roles = await db.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync();
+                model.Roles = await db.Roles.Where(p => p.Id != 1).Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync();
                 return View(model);
             }
             var doctor = await db.Doctors.FindAsync(model.Id);

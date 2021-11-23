@@ -1,5 +1,5 @@
 ﻿@model List<FinalProject.Models.DocViewModel>
-<h3>Вы успешно вошли в систему</h3>
+<h4 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Вы успешно вошли в систему</h4>
 <br/>
 @if ((await AuthorizationService.AuthorizeAsync(User, "OnlyForHead")).Succeeded)
 {

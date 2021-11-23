@@ -1,12 +1,4 @@
-﻿.my-custom-scrollbar {
-    position: relative;
-    height: 50px;
-    overflow: auto;
-}
-
-.table-wrapper-scroll-y {
-    display: block;
-}
+﻿
 
 a.navbar-brand {
   white-space: normal;

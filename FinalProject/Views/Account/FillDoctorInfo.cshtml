@@ -1,7 +1,7 @@
 ﻿
 @model FinalProject.Models.Doctor
 
-<h2>Добавление нового врача</h2> <br/>
+<h4 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Добавление нового врача</h4> <br/>
 <form asp-action="FillDoctorInfo" asp-controller="Account" asp-antiforgery="true">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
     <div class="form-group">
@@ -38,8 +38,8 @@
 <br />
                 </div>
         <div class="btn-margin">
-            <input type="submit" class="btn btn-info" value="Отправить"/><a/>
-            <input class="btn btn-danger" type="reset" value="Очистить" />
+            <input style="margin-left: 1em;" type="submit" class="btn btn-info" value="Отправить"/><a/>
+            <input style="margin-left: 1em;" class="btn btn-danger" type="reset" value="Очистить" />
         </div>
 
 </form>
