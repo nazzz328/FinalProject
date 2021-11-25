@@ -1,6 +1,9 @@
-﻿@model List<FinalProject.Models.DocViewModel>
+﻿@model dynamic
 <h4 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Вы успешно вошли в систему</h4>
 <br/>
+
+@*Block for Head*@
+
 @if (User.IsInRole("Head"))
 {
 <a style="background-color: #bfbfbf; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block;" asp-action="Register" asp-controller = "Account">Добавить нового врача</a>
@@ -20,7 +23,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.viewDocs)
         {
         <tr>
             <td>@item.Id</td>
@@ -36,7 +39,47 @@
 </div>
 <br/>
 <br/>
-<h6>Список оформленных историй</h6>
+@foreach (var item in Model.names)
+    {
+        <p>@item</p>
+    }
+    <h6>Список оформленных историй</h6>
+<div style="height: 500px;overflow: scroll;">
+<table class="table table-bordered table-striped mb-0">
+    <thead>
+        <tr>
+        <th><span class="text">ID</span></th>
+        <th><span class="text">Имя</span></th>
+        <th><span class="text">Фамилия</span></th>
+        <th><span class="text">Дата поступления</span></th>
+        <th></th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach (var item in Model.viewInitPatients)
+        {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.ReceiptDate</td>
+            <td><a class="btn btn-link" href="~/Account/EditInitPatient?id=@item.Id">Изменить</a></td>
+            <td><a class="btn btn-link" href="~/Account/DeleteEditPatient?id=@item.Id">Удалить</a></td>
+        </tr>
+         }*@
+    </tbody>
+</table>
+</div>
+}
+
+@*Block for Obstet*@
+@if (User.IsInRole("Obstet"))
+{
+    <a style="background-color: #bfbfbf; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block;" asp-action="AddPatient" asp-controller = "Account">Добавить нового пациента</a>
+    <br/>
+<br/>
+<h6>Список зарегистрированных пациентов</h6>
 <div style="height: 300px;overflow: scroll;">
 <table class="table table-bordered table-striped mb-0">
     <thead>
@@ -50,17 +93,17 @@
         </tr>
     </thead>
     <tbody>
-       @* @foreach (var item in Model)
+       @foreach (var item in Model.viewInitPatients)
         {
         <tr>
-            <td>@</td>
+            <td>@item.Id</td>
             <td>@item.FirstName</td>
             <td>@item.LastName</td>
-            <td>@item.RusName</td>
-            <td><a class="btn btn-link" href="~/Account/Edit?id=@item.Id">Изменить</a></td>
-            <td><a class="btn btn-link" href="~/Account/Delete?id=@item.Id">Удалить</a></td>
-        </tr>*@
-     @*   }*@
+            <td>@item.ReceiptDate</td>
+            <td><a class="btn btn-link" href="~/Account/EditInitPatient?id=@item.Id">Изменить</a></td>
+            <td><a class="btn btn-link" href="~/Account/DeleteInitPatient?id=@item.Id">Удалить</a></td>
+        </tr>
+         }
     </tbody>
 </table>
 </div>

@@ -12,11 +12,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Web.Helpers;
+using System.Dynamic;
 
 namespace FinalProject.Controllers
 {
     public class AccountController : Controller
     {
+        dynamic IndexModels = new ExpandoObject();
         private UsersContext db;
         public AccountController (UsersContext context)
         {
@@ -30,9 +32,9 @@ namespace FinalProject.Controllers
         [Authorize]
         public async Task <IActionResult> Index()
         {
-            var Doctors = await db.Doctors.Where(p => p. Id != 1).Include(p => p.User).ToListAsync();
+            var doctors = await db.Doctors.Where(p => p. Id != 1).Include(p => p.User).ToListAsync();
             var viewDocs = new List<DocViewModel>();
-            foreach (var doc in Doctors)
+            foreach (var doc in doctors)
             {
                 viewDocs.Add(new DocViewModel
                 {
@@ -42,15 +44,40 @@ namespace FinalProject.Controllers
                     RusName = await db.Roles.Where(p => p.Id == doc.User.RoleId).Select(p => p.RusName).FirstOrDefaultAsync()
                 }); ;
             }
-            return View(viewDocs);
+            var initPatients = await db.Patients.ToListAsync();
+            var viewInitPatients = new List<ViewInitPatient>();
+            foreach (var item in initPatients)
+            {
+                viewInitPatients.Add(new ViewInitPatient
+                {
+                    Id = item.Id,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    ReceiptDate = item.ReceiptDate
+                });
+            }
+            IndexModels.viewDocs = viewDocs;
+            IndexModels.viewInitPatients = viewInitPatients;
+            var names = new List<string> { "one", "two", "three" };
+            IndexModels.names = names;
+            return View(IndexModels);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login (LoginModel model)
         {
+            bool isVerified;
             var hashedPassword = db.Users.Where(p => p.PhoneNumber == model.PhoneNumber).Select(p => p.HashedPassword).FirstOrDefault();
-            var isVerified = Crypto.VerifyHashedPassword(hashedPassword, model.Password);
+            try
+            {
+                isVerified = Crypto.VerifyHashedPassword(hashedPassword, model.Password);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Данного пользователя не существует");
+                return View(model);
+            }
             User user = await db.Users
                 .Include(p => p.Role)
                 .FirstOrDefaultAsync(p => p.PhoneNumber == model.PhoneNumber && isVerified);
@@ -237,7 +264,7 @@ namespace FinalProject.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index", "Account");
             }
-
+            ModelState.AddModelError("", "Данные были введены неправильно");
             return View(doctor);
         }
 
@@ -250,11 +277,78 @@ namespace FinalProject.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Obstet")]
-        public IActionResult AddPatient (Patient patient)
+        public async Task <IActionResult> AddPatient (Patient model)
         {
-            return View();
+            int age;
+            age = DateTime.Now.Subtract(model.DateOfBirth).Days;
+            age = age / 365;
+            var patient = new Patient { FirstName = model.FirstName, LastName = model.LastName, MiddleName = model.MiddleName, Address = model.Address, DateOfBirth = model.DateOfBirth, Age = age, Gender = model.Gender, Height = model.Height, PassportNumber = model.PassportNumber, ReceiptDate = DateTime.Now, Weight = model.Weight, BloodPressure = model.BloodPressure, Temperature = model.Temperature };
+            if (ModelState.IsValid)
+            {
+                await db.Patients.AddAsync(patient);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index", "Account");
+            }
+            ModelState.AddModelError("", "Данные были введены неправильно");
+            return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Obstet")]
+        public async Task<IActionResult> EditInitPatient(int id)
+        {
+            var patient = await db.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            return View(patient);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Obstet")]
+        public async Task<IActionResult> EditInitPatient(Patient model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Данные введены неправильно");
+                return View(model);
+            }
+            var patient = await db.Patients.FindAsync(model.Id);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            patient.FirstName = model.FirstName;
+            patient.LastName = model.LastName;
+            patient.MiddleName = model.MiddleName;
+            patient.PassportNumber = model.PassportNumber;
+            patient.DateOfBirth = model.DateOfBirth;
+            patient.Address = model.Address;
+            patient.Gender = model.Gender;
+            patient.Temperature = model.Temperature;
+            patient.BloodPressure = model.BloodPressure;
+            patient.Weight = model.Weight;
+            patient.Height = model.Height;
+            patient.Age = model.Age;
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Account");
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles = "Obstet")]
+        public async Task<IActionResult> DeleteInitPatient(int id)
+        {
+            var patient = await db.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            db.Patients.Remove(patient);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Account");
+        }
 
         private async Task Authenticate (User user)
             {

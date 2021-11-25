@@ -17,5 +17,8 @@ namespace FinalProject.Models
         public double Weight { get; set; }
         public DateTime ReceiptDate { get; set; }
         public int ProcessingStatus { get; set; }
+        public double Temperature { get; set; }
+        public string BloodPressure { get; set; }
+        
     }
 }

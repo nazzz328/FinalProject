@@ -75,6 +75,61 @@ namespace FinalProject.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FinalProject.Models.Patient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BloodPressure")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PassportNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProcessingStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReceiptDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Temperature")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patients");
+                });
+
             modelBuilder.Entity("FinalProject.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -147,7 +202,7 @@ namespace FinalProject.Migrations
                         new
                         {
                             Id = 1,
-                            HashedPassword = "AK7B3YlBAoPcREzq8LUWR8uRzSdCW9ZZiIcNhE8h4uUhwuoezRyqqlo4rQeimQ36SQ==",
+                            HashedPassword = "AJk+ZMJz/4wE4vJvHODnhYhoW4v+xyDbaRvOyh/PjQlEhmML4bvIAJTNwI599I+8GQ==",
                             PhoneNumber = "992988775715",
                             RoleId = 1
                         });

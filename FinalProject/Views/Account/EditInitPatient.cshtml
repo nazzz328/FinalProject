@@ -1,0 +1,76 @@
+﻿@model FinalProject.Models.Patient
+
+<h4 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Изменение данных пациента</h4> <br/>
+<form asp-action="EditInitPatient" method="post" asp-controller="Account" asp-antiforgery="true">
+   <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <br/>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Gender" />
+                <input type="hidden" asp-for="Age" />
+        <div class="col-sm-3">
+            <label asp-for="FirstName">Введите имя: </label>
+            <input type="text" class="form-control" asp-for="FirstName"/>
+            <span asp-validation-for="FirstName" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="LastName">Введите фамилию: </label>
+            <input type="text" class="form-control" asp-for="LastName"/>
+            <span asp-validation-for="LastName" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="MiddleName">Введите отчество: </label>
+            <input type="text" class="form-control" asp-for="MiddleName"/>
+            <span asp-validation-for="MiddleName" />
+        </div>
+        <div style="margin-left: 1em;"class="form-check form-check-inline">
+            <label>Укажите пол: </label>
+  <input style="margin-left: 1em;" class="form-check-input" type="radio" name="Gender" id="Male" value="М" data-val="М">
+  <label class="form-check-label" for="Male">М</label>
+  <input style="margin-left: 1em;" class="form-check-input" type="radio" name="Gender" id="Male" value="Ж" data-val="Ж">
+  <label class="form-check-label" for="Male">Ж</label>
+  </div> 
+  <div class="col-sm-3">
+            <label asp-for="Address">Введите адрес: </label>
+            <input type="text" class="form-control" asp-for="Address"/>
+            <span asp-validation-for="Address" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="PassportNumber">Введите номер паспорта: </label>
+            <input type="text" class="form-control" asp-for="PassportNumber"/>
+            <span asp-validation-for="PassportNumber" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="DateOfBirth">Введите дату рождения: </label>
+            <input type="date" placeholder="dd/mm/yyyy" class="form-control" asp-for="DateOfBirth"/>
+            <span asp-validation-for="DateOfBirth" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="Height">Укажите рост: </label>
+            <input type="text" class="form-control" asp-for="Height"/>
+            <span asp-validation-for="Height" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="Weight">Укажите вес: </label>
+            <input type="text" class="form-control" asp-for="Weight"/>
+            <span asp-validation-for="Weight" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="Temperature">Укажите температуру тела (С): </label>
+            <input type="text" class="form-control" asp-for="Temperature"/>
+            <span asp-validation-for="Temperature" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="BloodPressure">Укажите кровяное давление: </label>
+            <input type="text" class="form-control" asp-for="BloodPressure"/>
+            <span asp-validation-for="BloodPressure" />
+        </div>
+       <br />
+                </div>
+        <div class="btn-margin">
+            <input type="submit" class="btn btn-info" style="margin-left: 1em;" value="Сохранить"/>
+            <input style="margin-left: 1em;" class="btn btn-danger" type="reset" value="Очистить" />
+            <a class="btn" asp-controller="Account" asp-action="Index">Назад</a>
+        </div>
+
+</form>

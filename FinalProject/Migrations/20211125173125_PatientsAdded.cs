@@ -5,10 +5,36 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FinalProject.Migrations
 {
-    public partial class Restruct2 : Migration
+    public partial class PatientsAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Patients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PassportNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Height = table.Column<double>(type: "float", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    ReceiptDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProcessingStatus = table.Column<int>(type: "int", nullable: false),
+                    Temperature = table.Column<double>(type: "float", nullable: false),
+                    BloodPressure = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patients", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
@@ -30,7 +56,7 @@ namespace FinalProject.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HashedPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -83,8 +109,8 @@ namespace FinalProject.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Password", "PhoneNumber", "RoleId" },
-                values: new object[] { 1, "123456", "992988775715", 1 });
+                columns: new[] { "Id", "HashedPassword", "PhoneNumber", "RoleId" },
+                values: new object[] { 1, "AJk+ZMJz/4wE4vJvHODnhYhoW4v+xyDbaRvOyh/PjQlEhmML4bvIAJTNwI599I+8GQ==", "992988775715", 1 });
 
             migrationBuilder.InsertData(
                 table: "Doctors",
@@ -106,6 +132,9 @@ namespace FinalProject.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Doctors");
+
+            migrationBuilder.DropTable(
+                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "Users");
