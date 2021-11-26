@@ -112,3 +112,44 @@
 </table>
 </div>
 }
+
+@*Block for Gynec*@
+
+@if (User.IsInRole("Gynec"))
+{
+    <a style="background-color: #bfbfbf; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block;" asp-action="AddPatient" asp-controller = "Account">Добавить нового пациента</a>
+    <br/>
+<br/>
+<h6>Список зарегистрированных пациентов</h6>
+<div style="height: 300px;overflow: scroll;">
+<table class="table table-bordered table-striped mb-0">
+    <thead>
+        <tr>
+        <th><span class="text">ID</span></th>
+        <th><span class="text">Имя</span></th>
+        <th><span class="text">Фамилия</span></th>
+        <th><span class="text">Дата поступления</span></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var item in Model.viewProcPatients)
+        {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.ReceiptDate</td>
+            <td><a class="btn btn-link" href="~/Account/EditInitPatient?id=@item.Id">Заполнить историю</a></td>
+            <td><a class="btn btn-link" href="~/Account/DeleteInitPatient?id=@item.Id">Удалить</a></td>
+            <td><a class="btn btn-link" href="~/Account/ViewInitPatient?id=@item.Id">Просмотреть</a></td>
+            <td><a class="btn btn-link" href="~/Account/SubmitInitPatient?id=@item.Id">Отправить</a></td>
+        </tr>
+         }
+    </tbody>
+</table>
+</div>
+}

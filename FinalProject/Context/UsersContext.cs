@@ -20,6 +20,8 @@ namespace FinalProject.Context
     public DbSet<Role> Roles { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Patient> Patients { get; set; }
+    public DbSet<History> Histories { get; set; }
+    public DbSet<Test> Tests { get; set; }
 
         public const string headRoleName = "Head";
         public const string depHeadRoleName = "DepHead";

@@ -2,7 +2,7 @@
 
 namespace FinalProject.Models
 {
-    public class ViewInitPatient
+    public class ViewPatient
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

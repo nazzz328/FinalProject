@@ -45,10 +45,22 @@ namespace FinalProject.Controllers
                 }); ;
             }
             var initPatients = await db.Patients.Where(p => p.ProcessingStatus == 0).ToListAsync();
-            var viewInitPatients = new List<ViewInitPatient>();
+            var ProcPatients = await db.Patients.Where(p => p.ProcessingStatus == 1).ToListAsync();
+            var viewInitPatients = new List<ViewPatient>();
+            var viewProcPatients = new List<ViewPatient>();
             foreach (var item in initPatients)
             {
-                viewInitPatients.Add(new ViewInitPatient
+                viewInitPatients.Add(new ViewPatient
+                {
+                    Id = item.Id,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    ReceiptDate = item.ReceiptDate
+                });
+            }
+            foreach (var item in ProcPatients)
+            {
+                viewProcPatients.Add(new ViewPatient
                 {
                     Id = item.Id,
                     FirstName = item.FirstName,
@@ -58,6 +70,7 @@ namespace FinalProject.Controllers
             }
             IndexModels.viewDocs = viewDocs;
             IndexModels.viewInitPatients = viewInitPatients;
+            IndexModels.viewProcPatients = viewProcPatients;
             return View(IndexModels);
         }
 
