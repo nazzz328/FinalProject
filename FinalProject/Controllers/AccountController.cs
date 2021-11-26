@@ -58,8 +58,6 @@ namespace FinalProject.Controllers
             }
             IndexModels.viewDocs = viewDocs;
             IndexModels.viewInitPatients = viewInitPatients;
-            var names = new List<string> { "one", "two", "three" };
-            IndexModels.names = names;
             return View(IndexModels);
         }
 
@@ -151,6 +149,35 @@ namespace FinalProject.Controllers
                 Roles =await db.Roles.Where(p => p.Id != 1).Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.RusName }).ToListAsync()
         };
             return View(result);
+        }
+
+        [HttpGet]
+        [Authorize (Roles = "Head")]
+        public async Task<IActionResult> View(int id)
+        {
+            var doctor = await db.Doctors.FindAsync(id);
+            if (doctor == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var user = await db.Users.Where(p => p.Id == doctor.UserId).Include(p => p.Role).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var fullDoc = new DocFullViewModel
+            {
+                Id = doctor.Id,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                MiddleName = doctor.MiddleName,
+                DateOfBirth = doctor.DateOfBirth,
+                Address = doctor.Address,
+                PassportNumber = doctor.PassportNumber,
+                PhoneNumber = user.PhoneNumber,
+                RusName = user.Role.RusName
+            };
+            return View(fullDoc);
         }
 
         [HttpGet]
@@ -257,7 +284,8 @@ namespace FinalProject.Controllers
         [Authorize(Roles = "Head")]
         public async Task <IActionResult> FillDoctorInfo(Doctor doctorModel, int id)
         {
-            var doctor = new Doctor { FirstName = doctorModel.FirstName, LastName = doctorModel.LastName, MiddleName = doctorModel.MiddleName, Address = doctorModel.Address, CreatedDate = DateTime.Now, DateOfBirth = doctorModel.DateOfBirth, PassportNumber = doctorModel.PassportNumber, UserId = id};
+            var user = await db.Users.Where(p => p.Id == id).FirstOrDefaultAsync();
+            var doctor = new Doctor { FirstName = doctorModel.FirstName, LastName = doctorModel.LastName, MiddleName = doctorModel.MiddleName, Address = doctorModel.Address, CreatedDate = DateTime.Now, DateOfBirth = doctorModel.DateOfBirth, PassportNumber = doctorModel.PassportNumber, UserId = id, User = user};
             if (ModelState.IsValid)
             {
                 await db.Doctors.AddAsync(doctor);

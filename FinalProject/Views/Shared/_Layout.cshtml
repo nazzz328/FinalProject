@@ -29,7 +29,7 @@
                 @if ((User.IsInRole("Head") || User.IsInRole("DepHead") || User.IsInRole("Gynec") || User.IsInRole("Obstet")))
                         {
                             
-                            <button class="btn btn-light" id="logout">
+                            <button class="btn btn-outline-secondary" id="logout">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a>
                             </button>
                         }

@@ -20,6 +20,7 @@
         <th><span class="text">Должность</span></th>
         <th></th>
         <th></th>
+        <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
             <td>@item.RusName</td>
             <td><a class="btn btn-link" href="~/Account/Edit?id=@item.Id">Изменить</a></td>
             <td><a class="btn btn-link" href="~/Account/Delete?id=@item.Id">Удалить</a></td>
+            <td><a class="btn btn-link" href="~/Account/View?id=@item.Id">Просмотреть</a></td>
         </tr>
         }
     </tbody>
@@ -39,10 +41,7 @@
 </div>
 <br/>
 <br/>
-@foreach (var item in Model.names)
-    {
-        <p>@item</p>
-    }
+
     <h6>Список оформленных историй</h6>
 <div style="height: 500px;overflow: scroll;">
 <table class="table table-bordered table-striped mb-0">
@@ -74,6 +73,7 @@
 }
 
 @*Block for Obstet*@
+
 @if (User.IsInRole("Obstet"))
 {
     <a style="background-color: #bfbfbf; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block;" asp-action="AddPatient" asp-controller = "Account">Добавить нового пациента</a>
@@ -90,6 +90,8 @@
         <th><span class="text">Дата поступления</span></th>
         <th></th>
         <th></th>
+        <th></th>
+        <th></th>
         </tr>
     </thead>
     <tbody>
@@ -102,6 +104,8 @@
             <td>@item.ReceiptDate</td>
             <td><a class="btn btn-link" href="~/Account/EditInitPatient?id=@item.Id">Изменить</a></td>
             <td><a class="btn btn-link" href="~/Account/DeleteInitPatient?id=@item.Id">Удалить</a></td>
+            <td><a class="btn btn-link" href="~/Account/ViewInitPatient?id=@item.Id">Просмотреть</a></td>
+            <td><a class="btn btn-link" href="~/Account/SubmitInitPatient?id=@item.Id">Отправить</a></td>
         </tr>
          }
     </tbody>
