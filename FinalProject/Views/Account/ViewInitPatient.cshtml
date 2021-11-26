@@ -1,0 +1,22 @@
+﻿@model FinalProject.Models.Patient
+
+<h4 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Просмотр первичных данных пациента</h4> <br/>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Имя: @Model.FirstName</li>
+        <li class="list-group-item">Фамилия: @Model.LastName</li>
+        <li class="list-group-item">Отчество: @Model.MiddleName</li>
+        <li class="list-group-item">Дата рождения: @Model.DateOfBirth.ToString("yyyy-MM-dd")</li>
+        <li class="list-group-item">Адрес: @Model.Address</li>
+        <li class="list-group-item">Номер паспорта: @Model.PassportNumber</li>
+        <li class="list-group-item">Возраст: @Model.Age</li>
+        <li class="list-group-item">Пол: @Model.Gender</li>
+        <li class="list-group-item">Вес: @Model.Weight</li>
+        <li class="list-group-item">Рост: @Model.Height</li>
+        <li class="list-group-item">Температура: @Model.Temperature</li>
+        <li class="list-group-item">Кровяное давление: @Model.BloodPressure</li>
+        <li class="list-group-item">Дата регистрации: @Model.ReceiptDate.ToString("yyyy-MM-dd")</li>
+    </ul>
+    <br/>
+        <div class="btn-margin">
+            <a class="btn btn-outline-dark" asp-controller="Account" asp-action="Index">Назад</a>
+            </div>

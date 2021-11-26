@@ -44,7 +44,7 @@ namespace FinalProject.Controllers
                     RusName = await db.Roles.Where(p => p.Id == doc.User.RoleId).Select(p => p.RusName).FirstOrDefaultAsync()
                 }); ;
             }
-            var initPatients = await db.Patients.ToListAsync();
+            var initPatients = await db.Patients.Where(p => p.ProcessingStatus == 0).ToListAsync();
             var viewInitPatients = new List<ViewInitPatient>();
             foreach (var item in initPatients)
             {
@@ -181,6 +181,33 @@ namespace FinalProject.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Obstet")]
+        public async Task<IActionResult> ViewInitPatient(int id)
+        {
+            var patient = await db.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            
+            return View(patient);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Obstet")]
+        public async Task<IActionResult> SubmitInitPatient(int id)
+        {
+            var patient = await db.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            patient.ProcessingStatus = 1;
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Account");
+        }
+
+            [HttpGet]
         [Authorize (Roles = "Head")]
         public async Task<IActionResult> Delete (int id)
         {
