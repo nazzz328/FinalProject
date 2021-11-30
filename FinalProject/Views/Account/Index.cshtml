@@ -32,9 +32,28 @@
             <td>@item.LastName</td>
             <td>@item.RusName</td>
             <td><a class="btn btn-link" href="~/Account/Edit?id=@item.Id">Изменить</a></td>
-            <td><a class="btn btn-link" href="~/Account/Delete?id=@item.Id">Удалить</a></td>
+            <td><button type="button" class="btn btn-link" data-toggle="modal" data-target="#Delete">Удалить</button></td>
             <td><a class="btn btn-link" href="~/Account/View?id=@item.Id">Просмотреть</a></td>
         </tr>
+        <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Deletel">Удаление врача</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите удалить врача?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+        <button type="button" class="btn btn-primary"><a href="~/Account/Delete?id=@item.Id">Да</a></button>
+      </div>
+    </div>
+  </div>
+</div>
         }
     </tbody>
 </table>
@@ -103,10 +122,49 @@
             <td>@item.LastName</td>
             <td>@item.ReceiptDate</td>
             <td><a class="btn btn-link" href="~/Account/EditInitPatient?id=@item.Id">Изменить</a></td>
-            <td><a class="btn btn-link" href="~/Account/DeleteInitPatient?id=@item.Id">Удалить</a></td>
+            <td><button type="button" class="btn btn-link" data-toggle="modal" data-target="#DeleteInitPatient">Удалить</button></td>
             <td><a class="btn btn-link" href="~/Account/ViewInitPatient?id=@item.Id">Просмотреть</a></td>
-            <td><a class="btn btn-link" href="~/Account/SubmitInitPatient?id=@item.Id">Отправить</a></td>
+            <td><button type="button" class="btn btn-link" data-toggle="modal" data-target="#SubmitInitPatient">Отправить</button></td>
         </tr>
+         <div class="modal fade" id="DeleteInitPatient" tabindex="-1" role="dialog" aria-labelledby="DeleteInitPatient" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteInitPatient">Удаление пациента</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите удалить пациента?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+        <button type="button" class="btn btn-primary"><a href="~/Account/DeleteInitPatient?id=@item.Id">Да</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="SubmitInitPatient" tabindex="-1" role="dialog" aria-labelledby="SubmitInitPatient" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="SubmitInitPatient">Отправить на дальнейшую обработку</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите отправить данные на обработку акушером-гинекологом?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+        <button type="button" class="btn btn-primary"><a href="~/Account/SubmitInitPatient?id=@item.Id">Да</a></button>
+      </div>
+    </div>
+  </div>
+</div>
          }
     </tbody>
 </table>
@@ -146,12 +204,53 @@
             <td>@item.ReceiptDate</td>
             <td><a class="btn btn-link" href="~/Account/AddProcPatient?id=@item.Id">Заполнить историю</a></td>
             <td><a class="btn btn-link" href="~/Account/EditProcPatient?id=@item.Id">Изменить историю</a></td>
-            <td><a class="btn btn-link" href="~/Account/DeleteProcPatient?id=@item.Id">Удалить</a></td>
+            <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#DeleteProcPatient">Удалить</button></td>         
             <td><a class="btn btn-link" href="~/Account/ViewProcPatient?id=@item.Id">Просмотреть</a></td>
-            <td><a class="btn btn-link" href="~/Account/SubmitProcPatient?id=@item.Id">Отправить</a></td>
+            <td><button type="button"class="btn btn-link" data-toggle="modal" data-target="#SubmitProcPatient">Отправить</button></td>
         </tr>
+   <div class="modal fade" id="DeleteProcPatient" tabindex="-1" role="dialog" aria-labelledby="DeleteProcPatient" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteProcPatient">Удаление пациента</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите удалить пациента?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+        <button type="button" class="btn btn-primary"><a href="~/Account/DeleteProcPatient?id=@item.Id">Да</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="SubmitProcPatient" tabindex="-1" role="dialog" aria-labelledby="SubmitProcPatient" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="SubmitProcPatient">Отправить на дальнейшую обработку</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите отправить историю на оценку заведующему кафедры?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+        <button type="button" class="btn btn-primary"><a href="~/Account/SubmitProcPatient?id=@item.Id">Да</a></button>
+      </div>
+    </div>
+  </div>
+</div>
          }
     </tbody>
 </table>
 </div>
 }
+
+
