@@ -1,0 +1,42 @@
+﻿@model FinalProject.Models.History
+
+<h4 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">@ViewBag.FirstName @ViewBag.LastName</h4> <br/>
+<form asp-action="AddProcPatient" asp-controller="Account" asp-antiforgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <br/>
+        <input type="hidden" asp-for="PatientId" />
+        <div class="col-sm-3">
+            <label asp-for="Complaints">Жалобы пациента: </label>
+            <input type="text" class="form-control" asp-for="Complaints"/>
+            <span asp-validation-for="Complaints" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="Anamnesis">Анамнез: </label>
+            <input type="text" class="form-control" asp-for="Anamnesis"/>
+            <span asp-validation-for="Anamnesis" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="Inspection">Результаты осмотра: </label>
+            <input type="text" class="form-control" asp-for="Inspection"/>
+            <span asp-validation-for="Inspection" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="Treatment">Лечение: </label>
+            <input type="text" class="form-control" asp-for="Treatment"/>
+            <span asp-validation-for="Treatment" />
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="Conclusion">Заключение: </label>
+            <input type="text" class="form-control" asp-for="Conclusion"/>
+            <span asp-validation-for="Conclusion" />
+        </div>
+
+       <br />
+                </div>
+        <div class="btn-margin">
+            <input type="submit" class="btn btn-info" style="margin-left: 1em;" value="Отправить"/>
+            <input style="margin-left: 1em;" class="btn btn-danger" type="reset" value="Очистить" />
+        </div>
+
+</form>

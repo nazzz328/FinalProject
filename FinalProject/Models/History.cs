@@ -15,9 +15,6 @@ namespace FinalProject.Models
         public int PatientId { get; set; }
         public Patient Patient { get; set; }
         public DateTime CreatedAt { get; set; }
-        [ForeignKey("TestId")]
-        public int TestId { get; set; }
-        public Test Test { get; set; }
 
 
     }

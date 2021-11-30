@@ -135,6 +135,7 @@ namespace FinalProject.Controllers
             return View(model);
         }
 
+
         [HttpGet]
         [Authorize(Roles = "Head")]
         public async Task <IActionResult> Edit (int id)
@@ -373,9 +374,81 @@ namespace FinalProject.Controllers
             return View(patient);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Gynec")]
+        public async Task<IActionResult> EditProcPatient(int id)
+        {
+            var history = await db.Histories.FindAsync(id);
+            if (history == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            return View(history);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Gynec")]
+        public async Task<IActionResult> AddProcPatient(int id)
+        {
+            var patient = await db.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var history = new History { Patient = patient, PatientId = id };
+            ViewBag.FirstName = patient.FirstName;
+            ViewBag.LastName = patient.LastName;
+            return View(history);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Gynec")]
+        public async Task<IActionResult> AddProcPatient(History model)
+        {
+            var history = new History { Anamnesis = model.Anamnesis, Inspection = model.Inspection, Conclusion = model.Conclusion, Complaints = model.Complaints, PatientId = model.PatientId, Patient = model.Patient, CreatedAt = DateTime.Now, Treatment = model.Treatment };
+            if (ModelState.IsValid)
+            {
+                await db.Histories.AddAsync(history);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index", "Account");
+            }
+            ModelState.AddModelError("", "Данные были введены неправильно");
+            return View(history);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Obstet")]
         public async Task<IActionResult> EditInitPatient(Patient model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Данные введены неправильно");
+                return View(model);
+            }
+            var patient = await db.Patients.FindAsync(model.Id);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            patient.FirstName = model.FirstName;
+            patient.LastName = model.LastName;
+            patient.MiddleName = model.MiddleName;
+            patient.PassportNumber = model.PassportNumber;
+            patient.DateOfBirth = model.DateOfBirth;
+            patient.Address = model.Address;
+            patient.Gender = model.Gender;
+            patient.Temperature = model.Temperature;
+            patient.BloodPressure = model.BloodPressure;
+            patient.Weight = model.Weight;
+            patient.Height = model.Height;
+            patient.Age = model.Age;
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Account");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Gynec")]
+        public async Task<IActionResult> EditProcPatient(History model)
         {
             if (!ModelState.IsValid)
             {
@@ -409,6 +482,27 @@ namespace FinalProject.Controllers
         public async Task<IActionResult> DeleteInitPatient(int id)
         {
             var patient = await db.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            db.Patients.Remove(patient);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Account");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Gynec")]
+        public async Task<IActionResult> DeleteProcPatient(int id)
+        { 
+            var history = await db.Histories.FindAsync(id);
+            if (history == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var patient = await db.Patients.FirstOrDefaultAsync(x => x.Id == history.PatientId);
+            db.Histories.Remove(history);
+            await db.SaveChangesAsync();
             if (patient == null)
             {
                 return RedirectToAction("Index", "Account");

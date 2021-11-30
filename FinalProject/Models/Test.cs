@@ -1,4 +1,6 @@
-﻿namespace FinalProject.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FinalProject.Models
 {
     public class Test
     {
@@ -13,5 +15,8 @@
         public bool HepatitisB { get; set; }
         public bool HepatitisC { get; set; }
         public bool AIDS { get; set; }
+        [ForeignKey ("HistoryId")]
+        public int HistoryId { get; set; }
+        public History History { get; set; }
     }
 }
