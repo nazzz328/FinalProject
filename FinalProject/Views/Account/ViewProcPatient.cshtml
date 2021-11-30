@@ -1,1 +1,32 @@
-﻿
+﻿@model dynamic
+
+<h4 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Просмотр данных пациента</h4> <br/>
+<h5 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Первичные данные:</h5> 
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Имя: @Model.Patient.FirstName</li>
+        <li class="list-group-item">Фамилия: @Model.Patient.LastName</li>
+        <li class="list-group-item">Отчество: @Model.Patient.MiddleName</li>
+        <li class="list-group-item">Дата рождения: @Model.Patient.DateOfBirth.ToString("yyyy-MM-dd")</li>
+        <li class="list-group-item">Адрес: @Model.Patient.Address</li>
+        <li class="list-group-item">Номер паспорта: @Model.Patient.PassportNumber</li>
+        <li class="list-group-item">Возраст: @Model.Patient.Age</li>
+        <li class="list-group-item">Пол: @Model.Patient.Gender</li>
+        <li class="list-group-item">Вес: @Model.Patient.Weight</li>
+        <li class="list-group-item">Рост: @Model.Patient.Height</li>
+        <li class="list-group-item">Температура: @Model.Patient.Temperature</li>
+        <li class="list-group-item">Кровяное давление: @Model.Patient.BloodPressure</li>
+        <li class="list-group-item">Дата регистрации: @Model.Patient.ReceiptDate.ToString("yyyy-MM-dd")</li>
+    </ul>
+    <br/>
+    <h5 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">История:</h5> 
+    <ul class="list-group list-group-flush">
+         <li class="list-group-item">Жалобы пациента: @Model.History.Complaints</li>
+         <li class="list-group-item">Анамнез: @Model.History.Anamnesis</li>
+         <li class="list-group-item">Результаты осмотра: @Model.History.Inspection</li>
+         <li class="list-group-item">Лечение: @Model.History.Treatment</li>
+         <li class="list-group-item">Заключение: @Model.History.Conclusion</li>
+     </ul>
+     <br/>
+        <div class="btn-margin">
+            <a class="btn btn-outline-dark" asp-controller="Account" asp-action="Index">Назад</a>
+            </div>

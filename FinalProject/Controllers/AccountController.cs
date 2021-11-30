@@ -19,6 +19,7 @@ namespace FinalProject.Controllers
     public class AccountController : Controller
     {
         dynamic IndexModels = new ExpandoObject();
+        dynamic GynecView = new ExpandoObject();
         private UsersContext db;
         public AccountController (UsersContext context)
         {
@@ -208,6 +209,22 @@ namespace FinalProject.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Gynec")]
+        public async Task<IActionResult> ViewProcPatient(int id)
+        {
+            var history = await db.Histories.FindAsync(id);
+            if (history == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var patient = await db.Patients.FirstOrDefaultAsync(p => p.Id == history.PatientId);
+            GynecView.Patient = patient;
+            GynecView.History = history;
+
+            return View(GynecView);
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Obstet")]
         public async Task<IActionResult> SubmitInitPatient(int id)
         {
@@ -221,7 +238,25 @@ namespace FinalProject.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-            [HttpGet]
+        [HttpGet]
+        [Authorize(Roles = "Gynec")]
+        public async Task<IActionResult> SubmitProcPatient(int id)
+        {
+            var history = await db.Histories.FindAsync(id);
+            if (history == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var patient = await db.Patients.FirstOrDefaultAsync(p => p.Id == history.PatientId);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            patient.ProcessingStatus = 2;
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Account");
+        }
+        [HttpGet]
         [Authorize (Roles = "Head")]
         public async Task<IActionResult> Delete (int id)
         {
@@ -455,23 +490,16 @@ namespace FinalProject.Controllers
                 ModelState.AddModelError("", "Данные введены неправильно");
                 return View(model);
             }
-            var patient = await db.Patients.FindAsync(model.Id);
-            if (patient == null)
+            var history = await db.Histories.FindAsync(model.Id);
+            if (history == null)
             {
                 return RedirectToAction("Index", "Account");
             }
-            patient.FirstName = model.FirstName;
-            patient.LastName = model.LastName;
-            patient.MiddleName = model.MiddleName;
-            patient.PassportNumber = model.PassportNumber;
-            patient.DateOfBirth = model.DateOfBirth;
-            patient.Address = model.Address;
-            patient.Gender = model.Gender;
-            patient.Temperature = model.Temperature;
-            patient.BloodPressure = model.BloodPressure;
-            patient.Weight = model.Weight;
-            patient.Height = model.Height;
-            patient.Age = model.Age;
+            history.Anamnesis = model.Anamnesis;
+            history.Complaints = model.Complaints;
+            history.Treatment = model.Treatment;
+            history.Conclusion = model.Conclusion;
+            history.Inspection = model.Inspection;
             await db.SaveChangesAsync();
             return RedirectToAction("Index", "Account");
         }

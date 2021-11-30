@@ -133,6 +133,7 @@
         <th></th>
         <th></th>
         <th></th>
+        <th></th>
         </tr>
     </thead>
     <tbody>
@@ -144,6 +145,7 @@
             <td>@item.LastName</td>
             <td>@item.ReceiptDate</td>
             <td><a class="btn btn-link" href="~/Account/AddProcPatient?id=@item.Id">Заполнить историю</a></td>
+            <td><a class="btn btn-link" href="~/Account/EditProcPatient?id=@item.Id">Изменить историю</a></td>
             <td><a class="btn btn-link" href="~/Account/DeleteProcPatient?id=@item.Id">Удалить</a></td>
             <td><a class="btn btn-link" href="~/Account/ViewProcPatient?id=@item.Id">Просмотреть</a></td>
             <td><a class="btn btn-link" href="~/Account/SubmitProcPatient?id=@item.Id">Отправить</a></td>
