@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinalProject.Models
 {
@@ -19,6 +20,8 @@ namespace FinalProject.Models
         public int ProcessingStatus { get; set; }
         public double Temperature { get; set; }
         public string BloodPressure { get; set; }
-        
+        public int ObstetId { get; set; }
+        public int GynecId { get; set; }
+        public int DepHeadId { get; set; }
     }
 }

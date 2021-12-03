@@ -17,8 +17,6 @@
         <li class="list-group-item">Кровяное давление: @Model.Patient.BloodPressure</li>
         <li class="list-group-item">Дата регистрации: @Model.Patient.ReceiptDate.ToString("yyyy-MM-dd")</li>
     </ul>
-    @if (ViewBag.ExistHistory = true)
-{
     <br/>
     <h5 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">История:</h5> 
     <ul class="list-group list-group-flush">
@@ -28,8 +26,8 @@
         <li class="list-group-item">Лечение: @Model.History.Treatment</li>
         <li class="list-group-item">Заключение: @Model.History.Conclusion</li>
     </ul>
-    }
     <br/>
         <div class="btn-margin">
             <a class="btn btn-outline-dark" asp-controller="Account" asp-action="Index">Назад</a>
             </div>
+

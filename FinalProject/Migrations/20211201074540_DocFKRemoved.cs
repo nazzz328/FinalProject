@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FinalProject.Migrations
 {
-    public partial class PatientsAdded : Migration
+    public partial class DocFKRemoved : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,10 @@ namespace FinalProject.Migrations
                     ReceiptDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProcessingStatus = table.Column<int>(type: "int", nullable: false),
                     Temperature = table.Column<double>(type: "float", nullable: false),
-                    BloodPressure = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    BloodPressure = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ObstetId = table.Column<int>(type: "int", nullable: false),
+                    GynecId = table.Column<int>(type: "int", nullable: false),
+                    DepHeadId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,6 +50,31 @@ namespace FinalProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Histories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Complaints = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Anamnesis = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Inspection = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Treatment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Conclusion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Histories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Histories_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,7 +138,7 @@ namespace FinalProject.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "HashedPassword", "PhoneNumber", "RoleId" },
-                values: new object[] { 1, "AJk+ZMJz/4wE4vJvHODnhYhoW4v+xyDbaRvOyh/PjQlEhmML4bvIAJTNwI599I+8GQ==", "992988775715", 1 });
+                values: new object[] { 1, "AGKED3j+0NaSV5q+0sm2MvLqHyXAh3K2sIl/THTBHNAw0IQVEb/WS4XjjMkApy9vzQ==", "992988775715", 1 });
 
             migrationBuilder.InsertData(
                 table: "Doctors",
@@ -121,6 +149,11 @@ namespace FinalProject.Migrations
                 name: "IX_Doctors_UserId",
                 table: "Doctors",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Histories_PatientId",
+                table: "Histories",
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -134,10 +167,13 @@ namespace FinalProject.Migrations
                 name: "Doctors");
 
             migrationBuilder.DropTable(
-                name: "Patients");
+                name: "Histories");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "Roles");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinalProject.Models
@@ -16,6 +17,5 @@ namespace FinalProject.Models
         [ForeignKey("UserId")]
         public User User { get; set; }
         public int UserId { get; set; }
-
     }
 }

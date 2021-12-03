@@ -6,37 +6,38 @@
     <div class="form-group">
         <br/>
         <input type="hidden" asp-for="PatientId" />
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <label asp-for="Complaints">Жалобы пациента: </label>
-            <input type="text" class="form-control" asp-for="Complaints"/>
+            <textarea type="text" class="form-control" rows="5" asp-for="Complaints"></textarea>
             <span asp-validation-for="Complaints" />
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <label asp-for="Anamnesis">Анамнез: </label>
-            <input type="text" class="form-control" asp-for="Anamnesis"/>
+            <textarea type="text" class="form-control" rows="5" asp-for="Anamnesis"></textarea>
             <span asp-validation-for="Anamnesis" />
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <label asp-for="Inspection">Результаты осмотра: </label>
-            <input type="text" class="form-control" asp-for="Inspection"/>
+            <textarea type="text" class="form-control" rows="5" asp-for="Inspection"></textarea>
             <span asp-validation-for="Inspection" />
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <label asp-for="Treatment">Лечение: </label>
-            <input type="text" class="form-control" asp-for="Treatment"/>
+            <textarea type="text" class="form-control" rows="5" asp-for="Treatment"></textarea>
             <span asp-validation-for="Treatment" />
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <label asp-for="Conclusion">Заключение: </label>
-            <input type="text" class="form-control" asp-for="Conclusion"/>
+            <textarea type="text" class="form-control" rows="5" asp-for="Conclusion"></textarea>
             <span asp-validation-for="Conclusion" />
-        </div>
+        </div> 
 
        <br />
                 </div>
         <div class="btn-margin">
-            <input type="submit" class="btn btn-info" style="margin-left: 1em;" value="Отправить"/>
-            <input style="margin-left: 1em;" class="btn btn-danger" type="reset" value="Очистить" />
+            <input type="submit" class="btn btn-light" style="margin-left: 1em;" value="Отправить"/>
+            <input style="margin-left: 1em;" class="btn btn-light" type="reset" value="Очистить" />
+            <a class="btn" asp-controller="Account" asp-action="Index">Назад</a>
         </div>
 
 </form>

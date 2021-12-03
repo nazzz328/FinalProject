@@ -11,11 +11,10 @@ namespace FinalProject.Models
         public string Inspection { get; set; }
         public string Treatment { get; set; }
         public string Conclusion { get; set; }
-        [ForeignKey("TestId")]
+        [ForeignKey("PatientId")]
         public int PatientId { get; set; }
         public Patient Patient { get; set; }
         public DateTime CreatedAt { get; set; }
-
 
     }
 }

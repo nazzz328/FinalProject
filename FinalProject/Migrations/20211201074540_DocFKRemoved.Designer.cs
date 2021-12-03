@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(UsersContext))]
-    [Migration("20211129194116_FixedForeignKey")]
-    partial class FixedForeignKey
+    [Migration("20211201074540_DocFKRemoved")]
+    partial class DocFKRemoved
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,11 +133,17 @@ namespace FinalProject.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DepHeadId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GynecId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Height")
                         .HasColumnType("float");
@@ -147,6 +153,9 @@ namespace FinalProject.Migrations
 
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ObstetId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PassportNumber")
                         .HasColumnType("nvarchar(max)");
@@ -213,54 +222,6 @@ namespace FinalProject.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FinalProject.Models.Test", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("AIDS")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("BloodType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ECG")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Erythrocytes")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Haemoglobin")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("HepatitisB")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HepatitisC")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("HistoryId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Leukocytes")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Rhesus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ultrasound")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HistoryId");
-
-                    b.ToTable("Tests");
-                });
-
             modelBuilder.Entity("FinalProject.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -288,7 +249,7 @@ namespace FinalProject.Migrations
                         new
                         {
                             Id = 1,
-                            HashedPassword = "AAfzFHfMOJjf16urY1NxWhnuEU5+56N1NKNsez2HrqMhjf9PE7zRyTFTLYOAWS6dog==",
+                            HashedPassword = "AGKED3j+0NaSV5q+0sm2MvLqHyXAh3K2sIl/THTBHNAw0IQVEb/WS4XjjMkApy9vzQ==",
                             PhoneNumber = "992988775715",
                             RoleId = 1
                         });
@@ -314,17 +275,6 @@ namespace FinalProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("FinalProject.Models.Test", b =>
-                {
-                    b.HasOne("FinalProject.Models.History", "History")
-                        .WithMany()
-                        .HasForeignKey("HistoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("History");
                 });
 
             modelBuilder.Entity("FinalProject.Models.User", b =>

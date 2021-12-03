@@ -1,5 +1,5 @@
 ﻿@model dynamic
-<h4 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Вы успешно вошли в систему</h4>
+<h6 style="font-family: Verdana, Times, serif; color: #5C5A5A; margin-left: 1em;">Вы успешно вошли в систему как <b>@ViewBag.Role</b></h6>
 <br/>
 
 @*Block for Head*@
@@ -49,7 +49,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-        <button type="button" class="btn btn-primary"><a href="~/Account/Delete?id=@item.Id">Да</a></button>
+        <button type="button" class="btn btn-primary"><a style="color: #FFFFFF;" href="~/Account/Delete?id=@item.Id">Да</a></button>
       </div>
     </div>
   </div>
@@ -61,7 +61,7 @@
 <br/>
 <br/>
 
-    <h6>Список оформленных историй</h6>
+ <h6>Список одобренных историй</h6>
 <div style="height: 500px;overflow: scroll;">
 <table class="table table-bordered table-striped mb-0">
     <thead>
@@ -75,17 +75,17 @@
         </tr>
     </thead>
     <tbody>
-        @*@foreach (var item in Model.viewInitPatients)
+        @foreach (var item in Model.viewApprovedPatients)
         {
         <tr>
             <td>@item.Id</td>
             <td>@item.FirstName</td>
             <td>@item.LastName</td>
             <td>@item.ReceiptDate</td>
-            <td><a class="btn btn-link" href="~/Account/EditInitPatient?id=@item.Id">Изменить</a></td>
-            <td><a class="btn btn-link" href="~/Account/DeleteEditPatient?id=@item.Id">Удалить</a></td>
+            <td><a class="btn btn-link" href="~/Account/ViewApprovedPatient?id=@item.Id">Просмотреть</a></td>
+            <td><a class="btn btn-link" href="~/Account/GeneratePdf?id=@item.Id" Target="_blank">Сгенерировать PDF</a></td>
         </tr>
-         }*@
+         }
     </tbody>
 </table>
 </div>
@@ -140,7 +140,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-        <button type="button" class="btn btn-primary"><a href="~/Account/DeleteInitPatient?id=@item.Id">Да</a></button>
+        <button type="button" class="btn btn-primary"><a style="color: #FFFFFF;" href="~/Account/DeleteInitPatient?id=@item.Id">Да</a></button>
       </div>
     </div>
   </div>
@@ -160,7 +160,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-        <button type="button" class="btn btn-primary"><a href="~/Account/SubmitInitPatient?id=@item.Id">Да</a></button>
+        <button type="button" class="btn btn-primary"><a style="color: #FFFFFF;" href="~/Account/SubmitInitPatient?id=@item.Id">Да</a></button>
       </div>
     </div>
   </div>
@@ -175,7 +175,6 @@
 
 @if (User.IsInRole("Gynec"))
 {
-    <a style="background-color: #bfbfbf; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block;" asp-action="AddPatient" asp-controller = "Account">Добавить нового пациента</a>
     <br/>
 <br/>
 <h6>Список зарегистрированных пациентов</h6>
@@ -202,11 +201,11 @@
             <td>@item.FirstName</td>
             <td>@item.LastName</td>
             <td>@item.ReceiptDate</td>
-            <td><a class="btn btn-link" href="~/Account/AddProcPatient?id=@item.Id">Заполнить историю</a></td>
-            <td><a class="btn btn-link" href="~/Account/EditProcPatient?id=@item.Id">Изменить историю</a></td>
+            <td><a class="btn btn-link @item.ForAddingVisib" href="~/Account/AddProcPatient?id=@item.Id">Заполнить</a></td>
+            <td><a class="btn btn-link @item.ForEditingVisib" href="~/Account/EditProcPatient?id=@item.Id">Изменить</a></td>
             <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#DeleteProcPatient">Удалить</button></td>         
             <td><a class="btn btn-link" href="~/Account/ViewProcPatient?id=@item.Id">Просмотреть</a></td>
-            <td><button type="button"class="btn btn-link" data-toggle="modal" data-target="#SubmitProcPatient">Отправить</button></td>
+            <td><button type="button"class="btn btn-link @item.ForEditingVisib" data-toggle="modal" data-target="#SubmitProcPatient">Отправить</button></td>
         </tr>
    <div class="modal fade" id="DeleteProcPatient" tabindex="-1" role="dialog" aria-labelledby="DeleteProcPatient" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -222,7 +221,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-        <button type="button" class="btn btn-primary"><a href="~/Account/DeleteProcPatient?id=@item.Id">Да</a></button>
+        <button type="button" class="btn btn-primary"><a style="color: #FFFFFF;" href="~/Account/DeleteProcPatient?id=@item.Id">Да</a></button>
       </div>
     </div>
   </div>
@@ -242,7 +241,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-        <button type="button" class="btn btn-primary"><a href="~/Account/SubmitProcPatient?id=@item.Id">Да</a></button>
+        <button type="button" class="btn btn-primary"><a style="color: #FFFFFF;" href="~/Account/SubmitProcPatient?id=@item.Id">Да</a></button>
       </div>
     </div>
   </div>
@@ -251,6 +250,103 @@
     </tbody>
 </table>
 </div>
+<br/>
+<br/>
+
+ <h6>Список одобренных историй</h6>
+<div style="height: 500px;overflow: scroll;">
+<table class="table table-bordered table-striped mb-0">
+    <thead>
+        <tr>
+        <th><span class="text">ID</span></th>
+        <th><span class="text">Имя</span></th>
+        <th><span class="text">Фамилия</span></th>
+        <th><span class="text">Дата поступления</span></th>
+        <th></th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.viewApprovedPatients)
+        {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.ReceiptDate</td>
+            <td><a class="btn btn-link" href="~/Account/ViewApprovedPatient?id=@item.Id">Просмотреть</a></td>
+            <td><a class="btn btn-link" href="~/Account/GeneratePdf?id=@item.Id" Target="_blank">Сгенерировать PDF</a></td>
+        </tr>
+         }
+    </tbody>
+</table>
+</div>
 }
 
+@*Block for DepHead*@
+
+@if (User.IsInRole("DepHead"))
+{
+    <br/>
+<br/>
+<h6>Список неодобренных историй</h6>
+<div style="height: 300px;overflow: scroll;">
+<table class="table table-bordered table-striped mb-0">
+    <thead>
+        <tr>
+        <th><span class="text">ID</span></th>
+        <th><span class="text">Имя</span></th>
+        <th><span class="text">Фамилия</span></th>
+        <th><span class="text">Дата поступления</span></th>
+        <th></th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var item in Model.viewFinalPatients)
+        {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.ReceiptDate</td>
+            <td><a class="btn btn-link" href="~/Account/ViewFinalPatient?id=@item.Id">Просмотреть</a></td>
+            <td><a class="btn btn-link" href="~/Account/ApprovePatient?id=@item.Id">Одобрить</a></td>
+        </tr>
+         }
+    </tbody>
+</table>
+</div>
+<br/>
+<br/>
+
+ <h6>Список одобренных историй</h6>
+<div style="height: 500px;overflow: scroll;">
+<table class="table table-bordered table-striped mb-0">
+    <thead>
+        <tr>
+        <th><span class="text">ID</span></th>
+        <th><span class="text">Имя</span></th>
+        <th><span class="text">Фамилия</span></th>
+        <th><span class="text">Дата поступления</span></th>
+        <th></th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.viewApprovedPatients)
+        {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.ReceiptDate</td>
+            <td><a class="btn btn-link" href="~/Account/ViewApprovedPatient?id=@item.Id">Просмотреть</a></td>
+            <td><a class="btn btn-link" href="~/Account/GeneratePdf?id=@item.Id" Target="_blank">Сгенерировать PDF</a></td>
+        </tr>
+         }
+    </tbody>
+</table>
+</div>
+}
 
